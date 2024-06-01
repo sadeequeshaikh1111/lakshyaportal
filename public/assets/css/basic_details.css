@@ -1,0 +1,10 @@
+.name-container {
+    display: flex; /* Makes elements display in a row */
+    align-items: center; /* Aligns labels and textboxes vertically */
+    margin-bottom: 10px; /* Adds some space below the div */
+  }
+  
+  .name-container label {
+    margin-right: 5px; /* Adds space between label and textbox */
+  }
+  
