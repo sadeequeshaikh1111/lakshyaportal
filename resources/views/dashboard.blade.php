@@ -1,3 +1,4 @@
+<!-- resources/views/layouts/app.blade.php -->
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -5,21 +6,27 @@
     </h2>
   </x-slot>
 
-  <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex">
-      <div class="bg-gray-800 text-white h-screen w-64 flex-shrink-0">
-        <ul class="p-4"> <li><a href="#" class="text-gray-300 hover:text-gray-100 px-4 py-2 rounded">Basic details</a></li>
-          <li><a href="#" class="text-gray-300 hover:text-gray-100 px-4 py-2 rounded">Educational details</a></li>
-          <li><a href="#" class="text-gray-300 hover:text-gray-100 px-4 py-2 rounded">Upload documents</a></li>
-          <li><a href="#" class="text-gray-300 hover:text-gray-100 px-4 py-2 rounded">Payment</a></li>
-        </ul>
-      </div>
+  <div style="display: flex; height: 100vh;">
+        <div style="width: 20%; background-color: #ccc;"> @include('partials.navbar')</div>
+        <div style="width: 80%; background-color: #f0f0f0;">
+        <main id="content">
+          <!-- Content will be dynamically loaded here -->
 
-      <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex-grow">
-        <div class="p-6 text-gray-900 dark:text-gray-100">
-          {{ __("You're logged in!") }}
-        </div>
+<div id="basic_details_view"> @include('partials.basic-details')</div>         
+        <div id="edu_details_view">@include('partials.educational-details')</div>  
+         <div id="uploaddocs"> @include('partials.upload-documents')</div>
+        </main>
+      </div>
+    </div>
+
+  
+    <footer class="bg-white dark:bg-gray-800 shadow mt-4">
+          <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
+            &copy; 2024 Your Company
+          </div>
+        </footer>
       </div>
     </div>
   </div>
+
 </x-app-layout>
