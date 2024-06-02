@@ -28,5 +28,26 @@
       </div>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Show the basic details view initially
+        $('#basic_details_view').show();
 
+        // Function to handle navigation links
+        $('.nav-link').click(function(e) {
+            e.preventDefault();
+            var target = $(this).data('target');
+
+            // Hide all sections
+            $('#basic_details_view, #edu_details_view, #uploaddocs, #payment').hide();
+
+            // Show the selected section
+            $('#edu_details_view').show();
+
+            $('#' + target).show();
+            alert(target+"clicked")
+        });
+    });
+</script>
 </x-app-layout>

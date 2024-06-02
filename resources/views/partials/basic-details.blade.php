@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extended Registration Form</title>
+    <title>Basic Details</title>
 </head>
 <body>
     <div class="form-container" style="width: 100%; max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
@@ -98,8 +98,7 @@
 
             <!-- Footer -->
             <div class="flex" style="display: flex; justify-content: space-between; align-items: center;">
-                <a href="{{ route('login') }}" style="color: #6366F1; text-decoration: none;">Already registered?</a>
-                <button type="submit" style="background-color: #6366F1; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Register</button>
+                <button type="submit" style="background-color: #6366F1; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Save and Next</button>
             </div>
         </form>
     </div>
