@@ -46,7 +46,6 @@
         $('.nav-link').click(function(e) {
             e.preventDefault();
             var target = $(this).data('target');
-            alert(target)
 
             // Hide all sections
             $('.content-div').hide();
@@ -54,7 +53,6 @@
             // Show the selected section
             $('#'+target).show();
 
-            alert(target+"clicked");
         });
     });
   </script>
