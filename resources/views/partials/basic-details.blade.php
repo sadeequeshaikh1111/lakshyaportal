@@ -6,6 +6,8 @@
     <title>Basic Details</title>
 </head>
 <body>
+{{ auth()->id() }}
+
     <div class="form-container" style="width: 100%; max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
         <form method="POST" action="{{ route('register') }}">
             @csrf
@@ -104,3 +106,71 @@
     </div>
 </body>
 </html>
+
+
+
+ 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+
+  <script>
+  
+
+    $(document).ready(function() {
+        // Show the basic details view initially
+       getBasicDetails();
+
+
+
+        });
+
+        function getBasicDetails() {
+  $.ajax({
+    url: "/getBasicDetails", // Replace with your actual route path
+    method: "GET",
+    success: function(response) {
+      // Handle successful response
+      console.log(response); // For debugging purposes
+      // Update your UI elements with the retrieved data (replace with your logic)
+      $("#first_name").val(response.first_name);
+      $("#first_name").val(response.first_name);
+$("#middle_name").val(response.middle_name);
+$("#last_name").val(response.last_name);
+$("#mother_name").val(response.mother_name);
+$("#dob").val(response.dob);
+$("#permanent_address").val(response.permanent_address);
+var gender_index;
+if (response.gender.toLowerCase() === "male") {
+  gender_index = 1;
+} else if (response.gender.toLowerCase() === "female") {
+  gender_index = 2;
+} else if (response.gender.toLowerCase() === "other") {
+  gender_index = 3;
+} else {
+  gender_index = 4; // or any default value you want
+}
+$("#gender option").eq(gender_index).prop('selected', true);
+
+
+$("#country").val(response.country);
+$("#state").val(response.state);
+$("#district").val(response.district);
+$("#taluka").val(response.taluka);
+$("#mobile_number").val(response.mobile_number);
+$("#exam_location_1").val(response.exam_location_1);
+$("#exam_location_2").val(response.exam_location_2);
+$("#exam_location_3").val(response.exam_location_3);
+
+       // Assuming response contains a 'name' property
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // Handle errors
+      console.error("Error:", textStatus, errorThrown);
+      alert("Failed to get details!");
+    }
+  });
+}
+
+
+  </script>
