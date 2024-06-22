@@ -14,27 +14,27 @@
 
             <div class="name-container" style="display: flex; align-items: center; margin-bottom: 10px;">
                 <label for="first_name" style="width: 20%;">First Name:</label>
-                <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}" required autofocus autocomplete="given-name" style="width: 30%; padding: 8px; margin-right: 2%;">
+                <input type="text" id="first_name" name="first_name" value="{{ old('first_name') ?: (session()->has('basicDetails') ? session('basicDetails')['first_name'] : '') }}" required autofocus autocomplete="given-name" style="width: 30%; padding: 8px; margin-right: 2%;">
                 <span style="margin-right: 5px;">&emsp;</span>
                 <label for="middle_name" style="width: 20%;">Middle Name:</label>
-                <input type="text" id="middle_name" name="middle_name" value="{{ old('middle_name') }}" autocomplete="additional-name" style="width: 30%; padding: 8px;">
+                <input type="text" id="middle_name" name="middle_name" value="{{ old('middle_name') ?: (session()->has('basicDetails') ? session('basicDetails')['middle_name'] : '') }}" autocomplete="additional-name" style="width: 30%; padding: 8px;">
             </div>
             <div class="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;">{{ $errors->first('first_name') }}</div>
             <div class="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;">{{ $errors->first('middle_name') }}</div>
 
             <div class="name-container" style="display: flex; align-items: center; margin-bottom: 10px;">
                 <label for="last_name" style="width: 20%;">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}" required autocomplete="family-name" style="width: 30%; padding: 8px; margin-right: 2%;">
+                <input type="text" id="last_name" name="last_name" value="{{ old('last_name') ?: (session()->has('basicDetails') ? session('basicDetails')['last_name'] : '') }}" required autocomplete="family-name" style="width: 30%; padding: 8px; margin-right: 2%;">
                 <span style="margin-right: 5px;">&emsp;</span>
                 <label for="mother_name" style="width: 20%;">Mother's Name:</label>
-                <input type="text" id="mother_name" name="mother_name" value="{{ old('mother_name') }}" autocomplete="additional-name" style="width: 30%; padding: 8px;">
+                <input type="text" id="mother_name" name="mother_name" value="{{ old('mother_name') ?: (session()->has('basicDetails') ? session('basicDetails')['mothers_name'] : '') }}" autocomplete="additional-name" style="width: 30%; padding: 8px;">
             </div>
             <div class="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;">{{ $errors->first('last_name') }}</div>
             <div class="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;">{{ $errors->first('mother_name') }}</div>
             <div class="name-container" style="display: flex; align-items: center; margin-bottom: 10px;">
     <!-- Date of Birth -->
     <label for="dob" style="width: 20%;">Date of Birth:</label>
-    <input type="date" id="dob" name="dob" value="{{ old('dob') }}" required style="width: 30%; padding: 8px; margin-right: 2%;">
+    <input type="date" id="dob" name="dob" value="{{ old('dob') ?: (session()->has('basicDetails') ? session('basicDetails')['date_of_birth'] : '') }}" required style="width: 30%; padding: 8px; margin-right: 2%;">
     <span style="margin-right: 5px;">&emsp;</span>
     <!-- Permanent Address -->
     <label for="permanent_address" style="width: 20%;">Permanent Address:</label>
@@ -56,9 +56,13 @@
                     <option value="other">Other</option>
                 </select>
                 <span style="margin-right: 5px;">&emsp;</span>
-                <label for="country" style="width: 20%;">Country:</label>
-                <input type="text" id="country" name="country" value="{{ old('country') }}" required autocomplete="country" style="width: 30%; padding: 8px;">
-            </div>
+           <div class="name-container" style="display: flex; align-items: center; margin-bottom: 10px;">
+    <label for="country" style="width: 20%;">Country:</label>
+    <select id="country" name="country" required autocomplete="country" style="width: 30%; padding: 8px;">
+        <option value="">Select Country</option>
+    </select>
+</div>
+              </div>
             <div class="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;">{{ $errors->first('gender') }}</div>
             <div class="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;">{{ $errors->first('country') }}</div>
 
@@ -120,6 +124,14 @@
     $(document).ready(function() {
         // Show the basic details view initially
        getBasicDetails();
+       fetchLocations("type", parentId = null)
+      // setDOB();
+      loadCountries();
+      
+      
+      
+      
+      
 
 
 
@@ -133,12 +145,7 @@
       // Handle successful response
       console.log(response); // For debugging purposes
       // Update your UI elements with the retrieved data (replace with your logic)
-      $("#first_name").val(response.first_name);
-      $("#first_name").val(response.first_name);
-$("#middle_name").val(response.middle_name);
-$("#last_name").val(response.last_name);
-$("#mother_name").val(response.mother_name);
-$("#dob").val(response.dob);
+      
 $("#permanent_address").val(response.permanent_address);
 var gender_index;
 if (response.gender.toLowerCase() === "male") {
@@ -158,9 +165,10 @@ $("#state").val(response.state);
 $("#district").val(response.district);
 $("#taluka").val(response.taluka);
 $("#mobile_number").val(response.mobile_number);
-$("#exam_location_1").val(response.exam_location_1);
-$("#exam_location_2").val(response.exam_location_2);
-$("#exam_location_3").val(response.exam_location_3);
+$("#exam_location_1").val(response.preferred_exam_location_1);
+$("#exam_location_2").val(response.preferred_exam_location_2);
+$("#exam_location_3").val(response.preferred_exam_location_3);
+
 
        // Assuming response contains a 'name' property
     },
@@ -172,5 +180,92 @@ $("#exam_location_3").val(response.exam_location_3);
   });
 }
 
+function fetchLocations(type, parentId = null) {
+        let url = `/getLocations/${type}`;
+        if (parentId) {
+            url += `?parentId=${parentId}`;
+        }
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(response) {
+                console.log(response); // For debugging purposes
+                // Add your logic to handle the response data here
+                // Example: populate a dropdown or process data
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                alert("Failed to fetch locations!");
+            }
+        });
+    }
+
+
+    function loadCountries() {
+            $.ajax({
+                url: "/getLocations/countries", // Route to fetch countries data
+                method: "GET",
+                success: function(response) {
+                    console.log(response); // For debugging purposes
+                    var options = '<option value="">Select Country</option>';
+                    // Append each country as an option in the select list
+                    response.forEach(function(country) {
+                        options += '<option value="' + country.id + '">' + country.name + '</option>';
+                    });
+                    // Set the HTML of the select element with the options
+                    $('#country').html(options);
+                    //get current selected country
+                    set_select_country();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error:", textStatus, errorThrown);
+                    alert("Failed to fetch countries!");
+                }
+            });
+        }
+
+
+        function loadStates(parentId) {
+    $.ajax({
+        url: "/getLocations/states", // Route to fetch states data
+        method: "GET",
+        data: { parentId: parentId }, // Pass parentId as data
+        success: function(response) {
+            console.log(response); // For debugging purposes
+            var options = '<option value="">Select State</option>';
+            // Append each state as an option in the select list
+            response.forEach(function(state) {
+                options += '<option value="' + state.id + '">' + state.name + '</option>';
+            });
+            // Set the HTML of the select element with the options
+            console.log("states loaded");
+            $('#state').html(options);
+            // Select the default state based on session data or other logic
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error:", textStatus, errorThrown);
+            alert("Failed to fetch states!");
+        }
+    });
+}
+   function set_select_country()
+  {
+    console.log("setting country")
+    var country = "{{ session('basicDetails')['country'] }}";
+    alert(country);
+    var countrySelect = document.getElementById('country');
+    for (var i = 0; i < countrySelect.options.length; i++) 
+    {
+      console.log(countrySelect.options[i].value+" "+country)
+        if (countrySelect.options[i].text === country) {
+            countrySelect.selectedIndex = i;
+            loadStates(i);
+            alert("index is" + i)
+            break;
+        }
+    }
+
+  }
 
   </script>

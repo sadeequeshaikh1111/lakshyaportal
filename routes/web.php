@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\basic_details_controller;
+use App\Http\Controllers\location_controller;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::get('getBasicDetails',[App\Http\Controllers\basic_details_controller::Class,'getBasicDetails']);
+
+
+Route::get('getLocations/{type}', [App\Http\Controllers\location_controller::Class,'get_locations']);
 
 require __DIR__.'/auth.php';
