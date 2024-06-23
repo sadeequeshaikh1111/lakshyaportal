@@ -3,16 +3,7 @@
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
       {{ __('Dashboard') }}
-      <div class="container">
-    @if (session('basicDetails'))
-        <h2>Welcome, {{ session('basicDetails')['name'] }}</h2>
-        <p>Email: {{ session('basicDetails')['email'] }}</p>
-        <p>Age: {{ session('basicDetails')['age'] }}</p>
-        <p>Date of Birth: {{ session('basicDetails')['date_of_birth'] }}</p>
-    @else
-        <p>No basic details found.</p>
-    @endif
-</div>
+
     </h2>
   </x-slot>
 
