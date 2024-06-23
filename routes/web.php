@@ -32,8 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::get('getBasicDetails',[App\Http\Controllers\basic_details_controller::Class,'getBasicDetails']);
-
-
 Route::get('getLocations/{type}', [App\Http\Controllers\location_controller::Class,'get_locations']);
+Route::put('save_basic_details', [App\Http\Controllers\basic_details_controller::Class, 'save_basic_details'])->name('save_basic_details.put');
 
 require __DIR__.'/auth.php';
