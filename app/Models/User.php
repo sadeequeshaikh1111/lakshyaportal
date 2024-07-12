@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'Basic_details_status',
+        'Educational_details_status',
+        'Upload_docs_status',
+        'Applied_exams',
     ];
 
     /**

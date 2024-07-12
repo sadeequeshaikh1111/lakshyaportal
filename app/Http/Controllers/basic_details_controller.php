@@ -40,7 +40,7 @@ class basic_details_controller extends Controller
             'mother_name' => 'nullable|string|max:255',
             'dob' => 'required|date',
             'permanent_address' => 'required|string',
-            'gender' => 'required|string|in:male,female,other',
+            'gender' => 'required|string|in:Male,Female,Other',
             'country' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'district' => 'required|string|max:255',
@@ -76,8 +76,11 @@ class basic_details_controller extends Controller
                 'exam_location_3' => $request->input('exam_location_3')
             ]
         );
-
-        return response()->json(['message' => 'Basic details saved successfully', 'data' => $basicDetails], 200);
+        $user_details = User::updateOrCreate(
+            ['email' => $request->input('email')],
+            ['Basic_details_status' => "Updated"]
+        );
+        return response()->json(['message' => 'Basic details & user saved successfully', 'data' => $user_details, 'basicDetails' => $basicDetails], 200);
 
 
 

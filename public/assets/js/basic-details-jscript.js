@@ -73,7 +73,7 @@ function loadCountries() {
             url: "/getLocations/countries", // Route to fetch countries data
             method: "GET",
             success: function(response) {
-                console.log(response); // For debugging purposes
+               // console.log(response); // For debugging purposes
                 var options = '<option value="">Select Country</option>';
                 // Append each country as an option in the select list
                 response.forEach(function(country) {
@@ -99,7 +99,7 @@ $.ajax({
     method: "GET",
     data: { parentId: parentId }, // Pass parentId as data
     success: function(response) {
-        console.log(response); // Log the response for debugging
+        //console.log(response); // Log the response for debugging
 
         // Check if the response is an array
         if (Array.isArray(response)) {
@@ -110,7 +110,7 @@ $.ajax({
             });
             // Set the HTML of the select element with the options
             $('#state').html(options);
-            console.log("States loaded successfully");
+          //  console.log("States loaded successfully");
           //  alert("Loaded states")
            stateid= set_select_state(country_id);
            count= loaddistricts(country_id,stateid);
@@ -136,7 +136,7 @@ function loaddistricts(countryId, stateId) {
         method: "GET",
         data: { countryId: countryId, stateId: stateId }, // Pass countryId and stateId as data
         success: function(response) {
-            console.log(response); // Log the response for debugging
+            //console.log(response); // Log the response for debugging
 
             // Check if the response is an array
             if (Array.isArray(response)) {
@@ -147,7 +147,7 @@ function loaddistricts(countryId, stateId) {
                 });
                 // Set the HTML of the select element with the options
                 $('#district').html(options);
-                console.log("Districts loaded successfully");
+               // console.log("Districts loaded successfully");
 
                 set_district();
                // alert("Loaded districts");
