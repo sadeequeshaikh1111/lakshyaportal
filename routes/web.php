@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\basic_details_controller;
 use App\Http\Controllers\location_controller;
+use App\Http\Controllers\educational_details_controllers;
+
 
 
 /*
@@ -34,5 +36,6 @@ Route::middleware('auth')->group(function () {
 Route::get('getBasicDetails',[App\Http\Controllers\basic_details_controller::Class,'getBasicDetails']);
 Route::get('getLocations/{type}', [App\Http\Controllers\location_controller::Class,'get_locations']);
 Route::put('save_basic_details', [App\Http\Controllers\basic_details_controller::Class, 'save_basic_details'])->name('save_basic_details.put');
+Route::post('save_edu_details', [App\Http\Controllers\educational_details_controllers::Class, 'save_edu_details'])->name('save_edu_details.post');
 
 require __DIR__.'/auth.php';

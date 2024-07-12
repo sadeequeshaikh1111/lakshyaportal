@@ -200,8 +200,10 @@
 
 function set_select_country()
 {
-  console.log("setting country")
   var country = "{{ session('basicDetails')['country'] }}";
+ // console.log("setting country")
+
+ // alert(country)
   if(country=="")
   {
       country=""
@@ -209,7 +211,7 @@ function set_select_country()
 
   //alert("setting"+country);
   var countrySelect = document.getElementById('country');
-
+  
   for (var i = 0; i < countrySelect.options.length; i++) 
   {
       if (countrySelect.options[i].text === country) {
@@ -226,9 +228,9 @@ function set_select_country()
 function set_select_state(country_id)
 {
 //  alert("Country ID "+country_id)
-  console.log("setting state")
+  //console.log("setting state")
   var state = "{{ session('basicDetails')['state'] }}";
-  alert("setting " +state);
+ // alert("setting " +state);
   if(state=="")
   {
       state=""
@@ -262,7 +264,7 @@ function set_district()
 {
     
  // alert("Country ID "+country_id)
-  console.log("setting state")
+ // console.log("setting state")
   var dist = "{{ session('basicDetails')['district'] }}";
   if(dist=="")
   {
@@ -275,8 +277,8 @@ function set_district()
 
   for (var i = 0; i < district_select.options.length; i++) 
   {
-    console.log("dist list len :::"+district_select.options.length)
-    console.log("dist in list"+district_select.options[i].text)
+    //console.log("dist list len :::"+district_select.options.length)
+   // console.log("dist in list"+district_select.options[i].text)
     //console.log("dist "+district_select.options[i].text);
       if (district_select.options[i].text === dist) {
         district_select.selectedIndex = i;
@@ -361,12 +363,12 @@ function saveBasicDetails() {
         mother_name: $('#mother_name').val(),
         dob: $('#dob').val(),
         permanent_address: $('#permanent_address').val(),
-        gender: $('#gender').val(),
-        country: $('#country').val(),
-        state: $('#state').val(),
-        district: $('#district').val(),
+        gender: $('#gender option:selected').text(),
+        country: $('#country option:selected').text(),
+        state: $('#state option:selected').text(),
+        district: $('#district option:selected').text(),
         taluka: $('#taluka').val(),
-        mobile_number: $('#mobile_number').val(),
+        mobile_number: $('#mobile_number').val(),                                                                         
         exam_location_1: $('#exam_location_1').val(),
         exam_location_2: $('#exam_location_2').val(),
         exam_location_3: $('#exam_location_3').val()
@@ -382,7 +384,7 @@ function saveBasicDetails() {
         contentType: 'application/json',
         data: JSON.stringify(basicDetails),
         success: function(response) {
-            console.log('Basic details saved successfully:', response);
+           // console.log('Basic details saved successfully:', response);
             // Handle success response as needed
             alert('Basic details saved successfully!');
         },

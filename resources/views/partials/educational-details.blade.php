@@ -29,6 +29,35 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label for="edu_category" class="col-sm-3 col-form-label">edu_category:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="edu_category" name="edu_category" required>
+                        <option value="">Select edu_category</option>
+                        <option value="10th">10th</option>
+                        <option value="12th">12th</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Graduation">Graduation</option>
+                        <option value="Post Graduation">Post Graduation</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="course" class="col-sm-3 col-form-label">Course:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="course" name="course" required>
+                        <option value="">Select Course</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Science">Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Computer Applications">Computer Applications</option>
+                        <option value="IT">IT</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label for="passingYear" class="col-sm-3 col-form-label">Passing Year:</label>
                 <div class="col-sm-9">
                     <input type="number" class="form-control" id="passingYear" name="passingYear" required>
@@ -46,86 +75,61 @@
                     <input type="number" class="form-control" id="yearOfPassing" name="yearOfPassing" required>
                 </div>
             </div>
+
+            
             <div class="form-group row">
                 <div class="col-sm-12 text-right">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="save()">Save</button>
                 </div>
             </div>
         </form>
-    </div>
-
-    <div class="table-container mt-5" style="width: 100%; max-width: 800px; margin: auto;">
-        <table id="educationTable" class="display">
-            <thead>
-                <tr>
-                    <th>University/Board</th>
-                    <th>College/Institute</th>
-                    <th>Passing Year</th>
-                    <th>CGPA/Percentage</th>
-                    <th>Year of Passing</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be populated via JavaScript -->
-            </tbody>
-        </table>
     </div>
 </div>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function() {
-        var table = $('#educationTable').DataTable();
+    function save() {
+        var formData = {
+            universityBoard: $('#universityBoard').val(),
+            collegeInstitute: $('#collegeInstitute').val(),
+            passingYear: $('#passingYear').val(),
+            cgpaPercentage: $('#cgpaPercentage').val(),
+            yearOfPassing: $('#yearOfPassing').val(),
+            edu_category: $('#edu_category').val(),
+            course: $('#course').val(),
+            editId: $('#editId').val()
+        };
 
-        $('#educationForm').submit(function(e) {
-            e.preventDefault();
+        // Perform validation
+        if (!formData.universityBoard || !formData.collegeInstitute || !formData.passingYear || !formData.cgpaPercentage || !formData.yearOfPassing || !formData.edu_category || !formData.course) {
+            alert("All fields are required.");
+            return;
+        }
 
-            var formData = {
-                universityBoard: $('#universityBoard').val(),
-                collegeInstitute: $('#collegeInstitute').val(),
-                passingYear: $('#passingYear').val(),
-                cgpaPercentage: $('#cgpaPercentage').val(),
-                yearOfPassing: $('#yearOfPassing').val(),
-                editId: $('#editId').val()
-            };
-
-            // Handle AJAX form submission here
-
-            // Example of adding a new row to the DataTable
-            if (!formData.editId) {
-                table.row.add([
-                    formData.universityBoard,
-                    formData.collegeInstitute,
-                    formData.passingYear,
-                    formData.cgpaPercentage,
-                    formData.yearOfPassing,
-                    '<button class="btn btn-sm btn-primary edit-btn">Edit</button> <button class="btn btn-sm btn-danger delete-btn">Delete</button>'
-                ]).draw();
-            } else {
-                // Update existing row
-            }
-
-            // Reset form
-            $('#educationForm')[0].reset();
-            $('#editId').val('');
-        });
-
-        // Handle edit and delete actions
-        $('#educationTable tbody').on('click', '.edit-btn', function() {
-            var data = table.row($(this).parents('tr')).data();
-            $('#universityBoard').val(data[0]);
-            $('#collegeInstitute').val(data[1]);
-            $('#passingYear').val(data[2]);
-            $('#cgpaPercentage').val(data[3]);
-            $('#yearOfPassing').val(data[4]);
-            $('#editId').val(data[5]); // Assuming you have an ID field in your data
-        });
-
-        $('#educationTable tbody').on('click', '.delete-btn', function() {
-            table.row($(this).parents('tr')).remove().draw();
-        });
+        // Example of handling form submission or AJAX call
+        // Replace with your implementation
+        alert("Data inserted: " + JSON.stringify(formData));
+        $.ajax({
+        type: 'POST',
+        url: "{{ route('save_edu_details.post') }}",
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            alert(response.message); // Show success message
+            $('#educationForm')[0].reset(); // Reset form
+            $('#editId').val(''); // Clear editId if needed
+        },
+        error: function(xhr, status, error) {
+            alert('An error occurred while saving data.');
+            console.error(error);
+        }
     });
+        // Reset form
+        $('#educationForm')[0].reset();
+        $('#editId').val('');
+    }
 </script>
 
 </body>
