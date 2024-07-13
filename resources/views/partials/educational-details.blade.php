@@ -88,7 +88,12 @@
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+
+var email = "{{ session('basicDetails')['email'] }}";
+
     function save() {
+                alert(email);
+
         var formData = {
             universityBoard: $('#universityBoard').val(),
             collegeInstitute: $('#collegeInstitute').val(),
@@ -97,7 +102,8 @@
             yearOfPassing: $('#yearOfPassing').val(),
             edu_category: $('#edu_category').val(),
             course: $('#course').val(),
-            editId: $('#editId').val()
+            editId: $('#editId').val(),
+            email:email
         };
 
         // Perform validation
