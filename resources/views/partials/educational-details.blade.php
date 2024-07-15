@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="{{ asset('assets\js\jquery.min.js')}}"></script>
+<script src="{{ asset('assets\js\jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('assets\js\bootstrap.min.js')}}"></script>
+<link href="{{ asset('assets\css\bootstrap.css') }}" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educational Details</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body>
 
@@ -84,15 +85,58 @@
             </div>
         </form>
     </div>
+
+    <div class="container mt-5">
+        <h2>Educational Details</h2>
+        <table class="table table-bordered" id="eduDetailsTable">
+            <thead>
+                <tr>
+                    <th>University/Board</th>
+                    <th>College/Institute</th>
+                    <th>Category</th>
+                    <th>Course</th>
+                    <th>Passing Year</th>
+                    <th>CGPA/Percentage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 <script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+
 
 var email = "{{ session('basicDetails')['email'] }}";
 
+$(document).ready(function() {
+    alert("We are ready"+email);
+    //fetchEducationalDetails(email,0);
+   // fetchEducationalDetails_ajax(email,'B')
+
+
+try {
+    fetchEducationalDetails_ajax(email);
+} catch (error) {
+    alert('An error occurred: ' + error.message);
+}
+
+   
+    console.log("Edu detail loaded");
+    // Your other initialization code here
+});
+
     function save() {
-                alert(email);
+                alert(email,0);
+                
 
         var formData = {
             universityBoard: $('#universityBoard').val(),
@@ -126,6 +170,7 @@ var email = "{{ session('basicDetails')['email'] }}";
             alert(response.message); // Show success message
             $('#educationForm')[0].reset(); // Reset form
             $('#editId').val(''); // Clear editId if needed
+            fetchEducationalDetails_ajax(email);
         },
         error: function(xhr, status, error) {
             alert('An error occurred while saving data.');
@@ -136,6 +181,72 @@ var email = "{{ session('basicDetails')['email'] }}";
         $('#educationForm')[0].reset();
         $('#editId').val('');
     }
+    
+function fetchEducationalDetails_ajax(email) {
+    console.log("Trying to load data");
+
+    $('#eduDetailsTable').DataTable({
+    processing: true,
+    serverSide: true,
+    destroy: true,
+    ajax: {
+        url: "{{ route('get_eduDetails_ajax.get') }}",
+        type: "GET",
+        data: {
+            email: email // Pass email as a parameter if needed
+        }
+    },
+    columns: [
+        
+        { data: 'university_board', name: 'university_board' },
+        { data: 'college_institute', name: 'college_institute' },
+        {data:'edu_category',name:'edu_category'},
+        {data:'course',name:'course'},
+
+        { data: 'passing_year', name: 'passing_year' },
+        { data: 'cgpa_percentage', name: 'cgpa_percentage' },
+        {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            render: function (data, type, row, meta) {
+                return data; // Render HTML content for actions
+            }
+        }
+    ]
+});
+
+}
+function Delete(id) {
+    console.log("Trying to delete data with ID:", id);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: "{{ route('delete_edu_detail.delete') }}",
+        type: "DELETE",
+        data: {
+            id: id
+        },
+        success: function(response) {
+            console.log("Data deleted successfully:");
+            console.log(response);
+            fetchEducationalDetails_ajax(email);
+            // You can process the response data here, e.g., update the table
+
+        },
+        error: function(xhr, status, error) {
+            console.error("Error deleting data:", error);
+        }
+    });
+}
+
+
 </script>
 
 </body>
