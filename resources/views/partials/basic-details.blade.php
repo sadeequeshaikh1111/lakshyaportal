@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="{{ asset('assets\js\jquery.min.js')}}"></script>
+<script src="{{ asset('assets\js\jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('assets\js\bootstrap.min.js')}}"></script>
+<link href="{{ asset('assets\css\bootstrap.css') }}" rel="stylesheet">
+  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Details</title>
@@ -169,9 +174,6 @@
 
 
  
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
-<script src="{{ asset('assets\js\basic-details-jscript.js')}}"> pageload setup</script>
 
   <script>
   

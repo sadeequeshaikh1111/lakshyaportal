@@ -1,5 +1,13 @@
 <!-- resources/views/layouts/app.blade.php -->
 <x-app-layout>
+<head>
+
+<script src="{{ asset('assets\js\jquery.min.js')}}"></script>
+<script src="{{ asset('assets\js\jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('assets\js\bootstrap.min.js')}}"></script>
+<link href="{{ asset('assets\css\bootstrap.css') }}" rel="stylesheet">
+</head>
+
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
       {{ __('Dashboard') }}
@@ -35,9 +43,8 @@
       &copy; 2024 Your Company
     </div>
   </footer>
-  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     $(document).ready(function() {
         // Show the basic details view initially
