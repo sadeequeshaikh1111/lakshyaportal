@@ -326,6 +326,7 @@ function saveAndNext() {
     console.log("saving basic details");
     saveBasicDetails();
 }
+
 function saveBasicDetails() {
     // Basic validations
     var requiredFields = [
