@@ -15,6 +15,7 @@
     <div class="form-container" style="width: 100%; max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
         <h2>Upload Documents</h2>
         <form id="documentForm" enctype="multipart/form-data">
+            @csrf <!-- Include CSRF token for Laravel -->
             <input type="hidden" id="editId">
             <div class="form-group row">
                 <label for="documentCategory" class="col-sm-3 col-form-label">Document Category:</label>
@@ -67,9 +68,13 @@
 </div>
 
 <script>
+    var email = "{{ session('basicDetails')['email'] }}";
+    var x="{{ session('basicDetails') }}";
+    alert(x);
+    
     $(document).ready(function() {
         var table = $('#documentTable').DataTable();
-
+        fetch_doc_details_ajax(email);
         $('#documentForm').submit(function(e) {
             e.preventDefault();
             save_documentdetails(table);
@@ -80,8 +85,6 @@
             table.row($(this).parents('tr')).remove().draw();
         });
     });
-
-    var email = "{{ session('basicDetails')['email'] }}";
 
     function load_docs(category) {
         console.log("Trying to Load documents for category:", category);
@@ -116,7 +119,7 @@
             documentSelect.empty(); // Clear any existing options
             documentSelect.append('<option value="">Select Document</option>');
             documentSelect.append('<option value="Other">Other</option>');
-            documentSelect.append('<input type="text" class="form-control mt-2" id="otherDocument" name="otherDocument" placeholder="Specify other document">');
+            documentSelect.after('<input type="text" class="form-control mt-2" id="otherDocument" name="otherDocument" placeholder="Specify other document">');
         } else {
             populateDocumentSelect(documents); // Clear dropdown for unspecified category
         }
@@ -134,10 +137,10 @@
 
     function save_documentdetails(table) {
         var formData = new FormData($('#documentForm')[0]);
-        formData.append('email', "{{ session('basicDetails')['email'] }}");
+        formData.append('email', email);
 
         $.ajax({
-            url: '{{ route("save_document_details.post") }}', // Update this to your route for saving upload details
+            url: '{{ route("save_document_details.post") }}',
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -149,14 +152,12 @@
                 console.log('Upload details saved successfully:', response);
                 alert('Upload details saved successfully!');
 
-                // Example of adding a new row to the DataTable
                 table.row.add([
                     $('#documentCategory').val(),
                     $('#documentFile')[0].files[0].name,
                     '<button class="btn btn-sm btn-danger delete-btn">Delete</button>'
                 ]).draw();
 
-                // Reset form
                 $('#documentForm')[0].reset();
             },
             error: function(xhr, status, error) {
@@ -165,6 +166,40 @@
             }
         });
     }
+
+
+    function fetch_doc_details_ajax(email) {
+    console.log("Trying to load data for "+email);
+
+    $('#documentTable').DataTable({
+        processing: true,
+        serverSide: true,
+        destroy: true,
+        ajax: {
+            url: "{{ route('fetch_doc_details.get') }}",
+            type: "GET",
+            data: {
+                email: email // Pass email as a parameter if needed
+            }
+        },
+        columns: [
+            { data: 'category', name: 'category' },
+            { data: 'file_name', name: 'file_name' },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    return '<button class="btn btn-sm btn-danger delete-btn">Delete</button>'; // Render HTML content for actions
+                }
+            }
+        ]
+    });
+}
+   
+    
+   
 </script>
 
 </body>

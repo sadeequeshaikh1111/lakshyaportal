@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2024 at 10:11 PM
+-- Generation Time: Jul 20, 2024 at 09:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -22,7 +22,6 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
 
 --
 -- Table structure for table `candidate_basic_details`
@@ -49,15 +48,17 @@ CREATE TABLE `candidate_basic_details` (
   `custom_values` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`custom_values`)),
   `email` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `User_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `candidate_basic_details`
 --
 
-INSERT INTO `candidate_basic_details` (`id`, `registration_number`, `first_name`, `middle_name`, `last_name`, `mothers_name`, `date_of_birth`, `permanent_address`, `gender`, `country`, `state`, `district`, `taluka`, `mobile_number`, `preferred_exam_location_1`, `preferred_exam_location_2`, `preferred_exam_location_3`, `custom_values`, `email`, `created_at`, `updated_at`) VALUES
-(1, '3aa9c35b-ee15-469d-818e-0f7c313a6278', 'Ayeza', 'Sadik', 'Shaikh', 'Naziya', '2024-05-25', '187 Vikjay Deshmukh nagar,Solapur', 'Female', 'India', 'Maharashtra', 'Solapur', 'Solapur', '8793365379', 'Solapur', 'Tembhurni', 'Pandharpur', NULL, 'ayezashaikh@gmail.com', '2024-07-13 13:32:11', '2024-07-15 14:03:56');
+INSERT INTO `candidate_basic_details` (`id`, `registration_number`, `first_name`, `middle_name`, `last_name`, `mothers_name`, `date_of_birth`, `permanent_address`, `gender`, `country`, `state`, `district`, `taluka`, `mobile_number`, `preferred_exam_location_1`, `preferred_exam_location_2`, `preferred_exam_location_3`, `custom_values`, `email`, `created_at`, `updated_at`, `User_id`) VALUES
+(1, '3aa9c35b-ee15-469d-818e-0f7c313a6278', 'Ayeza', 'Sadik', 'Shaikh', 'Naziya', '2024-05-25', '187 Vikjay Deshmukh nagar,Solapur', 'Female', 'India', 'Maharashtra', 'Solapur', 'Solapur', '8793365379', 'Solapur', 'Tembhurni', 'Pandharpur', NULL, 'ayezashaikh@gmail.com', '2024-07-13 13:32:11', '2024-07-15 14:03:56', 0),
+(4, 'ef1f2f1f-32c5-4e14-be4b-9afa66d1dc58', 'Akib shaikh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'akib11@gmail.com', '2024-07-20 14:26:50', '2024-07-20 14:26:50', 10);
 
 -- --------------------------------------------------------
 
@@ -125,7 +126,10 @@ CREATE TABLE `document_details` (
 --
 
 INSERT INTO `document_details` (`id`, `category`, `course`, `file_name`, `file_path`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'Educational document', '12th', '1721160553_Hello.png', '/storage/uploads/documents/1721160553_Hello.png', 'ayezashaikh@gmail.com', '2024-07-16 14:39:13', '2024-07-16 14:39:13');
+(1, 'Educational document', '12th', '1721160553_Hello.png', '/storage/uploads/documents/1721160553_Hello.png', 'ayezashaikh@gmail.com', '2024-07-16 14:39:13', '2024-07-16 14:39:13'),
+(2, 'Educational document', '10th', '1721161146_Hello.png', '/storage/uploads/documents/1721161146_Hello.png', 'ayezashaikh@gmail.com', '2024-07-16 14:49:07', '2024-07-16 14:49:07'),
+(3, 'Educational document', '12th', '1721500183_Hello.png', '/storage/uploads/documents/1721500183_Hello.png', 'ayezashaikh@gmail.com', '2024-07-20 12:59:43', '2024-07-20 12:59:43'),
+(4, 'Identity document', 'Adhaar card', '1721501194_20 Enemies.png', '/storage/uploads/documents/1721501194_20 Enemies.png', 'ayezashaikh@gmail.com', '2024-07-20 13:16:35', '2024-07-20 13:16:35');
 
 -- --------------------------------------------------------
 
@@ -348,7 +352,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `Basic_details_status`, `Educational_details_status`, `Upload_docs_status`, `Applied_exams`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'ayeza shaikh', 'ayezashaikh@gmail.com', NULL, '$2y$12$NPwLHSmyiJ4Pq8BJnIQ3ver/DrsYLh5YYEezDA87TnTn4B2Ez8sPW', 'Updated', 'Not Completed', 'Not Completed', 'Not Applied', NULL, '2024-07-13 13:32:10', '2024-07-13 13:38:18');
+(1, 'ayeza shaikh', 'ayezashaikh@gmail.com', NULL, '$2y$12$NPwLHSmyiJ4Pq8BJnIQ3ver/DrsYLh5YYEezDA87TnTn4B2Ez8sPW', 'Updated', 'Not Completed', 'Not Completed', 'Not Applied', NULL, '2024-07-13 13:32:10', '2024-07-13 13:38:18'),
+(10, 'Akib shaikh', 'akib11@gmail.com', NULL, '$2y$12$SAbdXhe.SqUQ7MpK3ZRj.uQ9p.TbZWhr2Xybrrq9ziW7mTpljSR/.', 'Not Completed', 'Not Completed', 'Not Completed', 'Not Applied', NULL, '2024-07-20 14:26:50', '2024-07-20 14:26:50');
 
 --
 -- Indexes for dumped tables
@@ -360,7 +365,9 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `Ba
 ALTER TABLE `candidate_basic_details`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `candidate_basic_details_registration_number_unique` (`registration_number`),
-  ADD UNIQUE KEY `candidate_basic_details_email_unique` (`email`);
+  ADD UNIQUE KEY `candidate_basic_details_email_unique` (`email`),
+  ADD UNIQUE KEY `User_id` (`User_id`),
+  ADD UNIQUE KEY `User_id_2` (`User_id`);
 
 --
 -- Indexes for table `countries`
@@ -447,7 +454,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `candidate_basic_details`
 --
 ALTER TABLE `candidate_basic_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -465,13 +472,13 @@ ALTER TABLE `districts`
 -- AUTO_INCREMENT for table `document_details`
 --
 ALTER TABLE `document_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `educational_details`
 --
 ALTER TABLE `educational_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `exam_details`
@@ -513,7 +520,7 @@ ALTER TABLE `talukas`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

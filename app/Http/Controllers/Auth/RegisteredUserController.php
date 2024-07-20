@@ -43,9 +43,14 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+    //  $usr= User::where('email', $request->email)->get();
+
+
         $basicinfo=CandidateBasicDetail::create([
+            'User_id'=>$user->id,
             'email' => $request->email,
             'first_name' => $request->name
+            
         ]);
 
         event(new Registered($user));

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\educational_detail;
 use App\Models\document_detail;
+use DataTables;
+
 
 
 
@@ -57,4 +59,21 @@ class documents_controller extends Controller
     }
 
     }
+
+    public function fetch_doc_details(Request $request)
+    {
+        $email=$request->email;
+        $data=document_detail::where('email', $email)->get();
+
+        return DataTables::of($data)->addColumn('action', function($data){
+        $btn = '<a type="button" id='.$data->id.' class="btn btn-danger btn-sm" onclick=Delete(this.id)>Delete</a>';
+        return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+        
+    }   
+
 }
+
+
