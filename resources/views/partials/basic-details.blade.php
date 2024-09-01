@@ -36,7 +36,7 @@
 
             <div class="form-row">
                 <div>
-                    <label for="first_name">First Name:</label>
+                    <label for="first_name">First Name :</label>
                     <input type="text" id="first_name" name="first_name" value="{{ old('first_name') ?: (session()->has('basicDetails') ? session('basicDetails')['first_name'] : '') }}" required autofocus autocomplete="given-name">
                     <div class="error">{{ $errors->first('first_name') }}</div>
                 </div>

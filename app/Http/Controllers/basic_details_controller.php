@@ -17,9 +17,10 @@ class basic_details_controller extends Controller
     {
         // Assuming you are getting the user's ID from the session or request
        try{ 
-        $userId = auth()->id(); // or however you are identifying the user
-        $user = CandidateBasicDetail::find($userId);
+        $email = auth()->user()->email;// or however you are identifying the user
+        $user =  CandidateBasicDetail::where('email', $email)->first();
         return $user;
+
        }
        catch(Exception $e)
        {
@@ -63,7 +64,7 @@ class basic_details_controller extends Controller
                 'middle_name' => $request->input('middle_name'),
                 'last_name' => $request->input('last_name'),
                 'mother_name' => $request->input('mother_name'),
-                'dob' => $request->input('dob'),
+                'date_of_birth' => $request->input('dob'),
                 'permanent_address' => $request->input('permanent_address'),
                 'gender' => $request->input('gender'),
                 'country' => $request->input('country'),
@@ -71,9 +72,9 @@ class basic_details_controller extends Controller
                 'district' => $request->input('district'),
                 'taluka' => $request->input('taluka'),
                 'mobile_number' => $request->input('mobile_number'),
-                'exam_location_1' => $request->input('exam_location_1'),
-                'exam_location_2' => $request->input('exam_location_2'),
-                'exam_location_3' => $request->input('exam_location_3')
+                'preferred_exam_location_1' => $request->input('exam_location_1'),
+                'preferred_exam_location_2' => $request->input('exam_location_2'),
+                'preferred_exam_location_3' => $request->input('exam_location_3')
             ]
         );
         $user_details = User::updateOrCreate(
