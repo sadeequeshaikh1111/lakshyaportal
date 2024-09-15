@@ -81,9 +81,7 @@
         });
 
         // Handle delete action
-        $('#documentTable tbody').on('click', '.delete-btn', function() {
-            table.row($(this).parents('tr')).remove().draw();
-        });
+
     });
 
     function load_docs(category) {
@@ -190,13 +188,43 @@
                 name: 'action',
                 orderable: false,
                 searchable: false,
-                render: function (data, type, row, meta) {
-                    return '<button class="btn btn-sm btn-danger delete-btn">Delete</button>'; // Render HTML content for actions
-                }
             }
         ]
     });
 }
+
+
+function Delete(documentId) {
+    if (confirm('Are you sure you want to delete this document?')) {
+        $.ajax({
+            url: '{{ route("delete-doc.post") }}',  // Use the named route for your delete request
+            type: 'POST',
+            data: {
+                id: documentId,
+                _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for security
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    // Optionally, refresh your DataTable or remove the deleted row manually
+                    $('#yourDataTable').DataTable().ajax.reload();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting document:', error);
+                alert('Error deleting document: ' + error);
+            }
+        });
+        fetch_doc_details_ajax(email);
+    }
+}
+
+
+
+
+
    
     
    

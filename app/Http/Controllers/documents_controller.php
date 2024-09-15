@@ -74,6 +74,25 @@ class documents_controller extends Controller
         
     }   
 
+    public function delete_document_details(Request $request)
+    {
+        // Retrieve the ID from the request
+        $documentId = $request->input('id');
+
+        // Find and delete the document record
+        $document = document_detail::find($documentId);
+
+        if ($document) {
+            $document->delete();
+            return response()->json(['success' => true, 'message' => 'Document deleted successfully.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Document not found.']);
+        }
+    }
+
+
+
+
 }
 
 
