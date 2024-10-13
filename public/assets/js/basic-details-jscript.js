@@ -1,50 +1,53 @@
 function alert_function()
 {
-    alert("function called");
+    //alert("function called");
 }
+var user_id = "{{ session('basicDetails')['User_id'] }}";
+alert('User id is basic details is '+ user_id)
 
 function getBasicDetails() {
+    console.log("Entering getBasicDetails");
     $.ajax({
-      url: "/getBasicDetails", // Replace with your actual route path
-      method: "GET",
-      success: function(response) {
-        // Handle successful response
-       // console.log(response); // For debugging purposes
-        // Update your UI elements with the retrieved data (replace with your logic)
-        
-  $("#permanent_address").val(response.permanent_address);
-  var gender_index;
-  if (response.gender.toLowerCase() === "male") {
-    gender_index = 1;
-  } else if (response.gender.toLowerCase() === "female") {
-    gender_index = 2;
-  } else if (response.gender.toLowerCase() === "other") {
-    gender_index = 3;
-  } else {
-    gender_index = 4; // or any default value you want
-  }
-  $("#gender option").eq(gender_index).prop('selected', true);
-  
-  
-  $("#country").val(response.country);
-  $("#state").val(response.state);
-  $("#district").val(response.district);
-  $("#taluka").val(response.taluka);
-  $("#mobile_number").val(response.mobile_number);
-  $("#exam_location_1").val(response.preferred_exam_location_1);
-  $("#exam_location_2").val(response.preferred_exam_location_2);
-  $("#exam_location_3").val(response.preferred_exam_location_3);
-  
-  
-         // Assuming response contains a 'name' property
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        // Handle errors
-        console.error("Error:", textStatus, errorThrown);
-        alert("Failed to get details!");
-      }
+        url: "/getBasicDetails", // Replace with your actual route path
+        method: "GET",
+        data:{user_id:user_id},
+        success: function(response) {
+            console.log(response); // For debugging purposes
+
+            // Updating UI elements with the retrieved data
+            $("#permanent_address").val(response.permanent_address || '');
+
+            // Handling gender selection
+            var genderIndex;
+            if (response.gender?.toLowerCase() === "male") {
+                genderIndex = 1;
+            } else if (response.gender?.toLowerCase() === "female") {
+                genderIndex = 2;
+            } else if (response.gender?.toLowerCase() === "other") {
+                genderIndex = 3;
+            } else {
+                genderIndex = 0; // Default to first option if no match
+            }
+            $("#gender option").eq(genderIndex).prop('selected', true);
+
+            // Set other fields
+            $("#country").val(response.country || '');
+            $("#state").val(response.state || '');
+            $("#district").val(response.district || '');
+            $("#taluka").val(response.taluka || '');
+            $("#mobile_number").val(response.mobile_number || '');
+            $("#exam_location_1").val(response.preferred_exam_location_1 || '');
+            $("#exam_location_2").val(response.preferred_exam_location_2 || '');
+            $("#exam_location_3").val(response.preferred_exam_location_3 || '');
+            $("#mother_name").val(response.mother_name || '');
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error:", textStatus, errorThrown);
+            alert("Failed to get details!");
+        }
     });
-  }
+}
+
   
   function fetchLocations(type, parentId = null) {
     let url = `/getLocations/${type}`;

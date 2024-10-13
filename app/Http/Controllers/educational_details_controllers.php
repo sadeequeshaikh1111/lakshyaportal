@@ -54,8 +54,8 @@ return $btn;
     
     public function get_eduDetails_ajax(Request $request)
     {
-        $email=$request->email;
-        $data=educational_detail::where('email', $email)->get();
+        $user_id=$request->user_id;
+        $data=educational_detail::where('user_id', $user_id)->get();
 
         return DataTables::of($data)->addColumn('action', function($data){
         $btn = '<a type="button" id='.$data->id.' class="btn btn-danger btn-sm" onclick=Delete(this.id)>Delete</a>';
@@ -76,7 +76,7 @@ return $btn;
 
 
         $email = Session::get('email'); // Retrieve email from session
-
+       
         $validatedData = $request->validate([
             'universityBoard' => 'required|string',
             'collegeInstitute' => 'required|string',
@@ -85,7 +85,8 @@ return $btn;
             'course' => 'required|string',
             'edu_category'=>'required|string',
             'course'=>'required|string',
-            'email'=>'required|string'
+            'email'=>'required|string',
+            'user_id'=>'required|string'
         ]);
         try
         {
@@ -97,6 +98,7 @@ return $btn;
             $eduDetail->edu_category = $validatedData['edu_category'];
             $eduDetail->course = $validatedData['course'];
             $eduDetail->email=$validatedData['email'];
+            $eduDetail->user_id=$validatedData['user_id'];
             $eduDetail->save();
             return response()->json([
                 'message' => 'Educational details saved successfully',

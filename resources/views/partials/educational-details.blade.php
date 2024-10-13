@@ -116,9 +116,10 @@ $.ajaxSetup({
 
 
 var email = "{{ session('basicDetails')['email'] }}";
+var user_id= "{{ session('basicDetails')['user_id'] }}";
 
 $(document).ready(function() {
-    alert("We are ready"+email);
+    //alert("We are ready"+email);
     //fetchEducationalDetails(email,0);
    // fetchEducationalDetails_ajax(email,'B')
 
@@ -147,8 +148,9 @@ try {
             edu_category: $('#edu_category').val(),
             course: $('#course').val(),
             editId: $('#editId').val(),
-            email:email
-        };
+            email:email,
+            user_id:user_id
+                };
 
         // Perform validation
         if (!formData.universityBoard || !formData.collegeInstitute || !formData.passingYear || !formData.cgpaPercentage || !formData.yearOfPassing || !formData.edu_category || !formData.course) {
@@ -193,7 +195,8 @@ function fetchEducationalDetails_ajax(email) {
         url: "{{ route('get_eduDetails_ajax.get') }}",
         type: "GET",
         data: {
-            email: email // Pass email as a parameter if needed
+            email: email, // Pass email as a parameter if needed
+            user_id:user_id
         }
     },
     columns: [
@@ -201,7 +204,9 @@ function fetchEducationalDetails_ajax(email) {
         { data: 'university_board', name: 'university_board' },
         { data: 'college_institute', name: 'college_institute' },
         {data:'edu_category',name:'edu_category'},
-        {data:'course',name:'course'},
+        {data:'course',name:'course'
+
+        },
 
         { data: 'passing_year', name: 'passing_year' },
         { data: 'cgpa_percentage', name: 'cgpa_percentage' },

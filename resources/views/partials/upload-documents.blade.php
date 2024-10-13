@@ -69,8 +69,9 @@
 
 <script>
     var email = "{{ session('basicDetails')['email'] }}";
+    var user_id = "{{ session('basicDetails')['User_id'] }}";
     var x="{{ session('basicDetails') }}";
-    alert(x);
+    alert("user id is "+user_id);
     
     $(document).ready(function() {
         var table = $('#documentTable').DataTable();
@@ -83,6 +84,7 @@
         // Handle delete action
         $('#documentTable tbody').on('click', '.delete-btn', function() {
             table.row($(this).parents('tr')).remove().draw();
+            fetch_doc_details_ajax(email);
         });
     });
 
@@ -97,7 +99,7 @@
                 type: "get",
                 data: {
                     email: email,
-                    category: category
+                    user_id:user_id
                 },
                 success: function(response) {
                     console.log("Data loaded successfully:", response);
@@ -136,9 +138,11 @@
     }
 
     function save_documentdetails(table) {
+        
         var formData = new FormData($('#documentForm')[0]);
+        alert(formData);
         formData.append('email', email);
-
+        formData.append('user_id', user_id);
         $.ajax({
             url: '{{ route("save_document_details.post") }}',
             type: 'POST',
@@ -179,7 +183,9 @@
             url: "{{ route('fetch_doc_details.get') }}",
             type: "GET",
             data: {
-                email: email // Pass email as a parameter if needed
+                email: email, // Pass email as a parameter if needed
+                user_id:user_id
+
             }
         },
         columns: [
@@ -191,13 +197,39 @@
                 orderable: false,
                 searchable: false,
                 render: function (data, type, row, meta) {
-                    return '<button class="btn btn-sm btn-danger delete-btn">Delete</button>'; // Render HTML content for actions
+                    return '<button class="btn btn-sm btn-danger delete-btn" >Delete</button>'; // Render HTML content for actions
                 }
             }
         ]
     });
 }
-   
+function Delete_doc(id) {
+    console.log("Trying to delete data with ID:", id);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: "{{ route('delete_doc_detail.delete') }}",
+        type: "DELETE",
+        data: {
+            id: id
+        },
+        success: function(response) {
+            console.log("Data deleted successfully:");
+            console.log(response);
+            fetchEducationalDetails_ajax(email);
+            // You can process the response data here, e.g., update the table
+
+        },
+        error: function(xhr, status, error) {
+            console.error("Error deleting data:", error);
+        }
+    });
+}   
     
    
 </script>

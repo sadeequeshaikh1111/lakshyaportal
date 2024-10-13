@@ -48,6 +48,7 @@ Route::delete('delete_edu_detail',[App\Http\Controllers\educational_details_cont
 Route::get('load_docs',[App\Http\Controllers\documents_controller::Class,'load_docs'])->name('load_docs.get');
 Route::post('save_document_details', [App\Http\Controllers\documents_controller::Class, 'save_document_details'])->name('save_document_details.post');
 Route::get('fetch_doc_details',[App\Http\Controllers\documents_controller::Class,'fetch_doc_details'])->name('fetch_doc_details.get');
+Route::delete('delete_doc_detail',[App\Http\Controllers\documents_controller::Class,'delete_doc_detail'])->name('delete_doc_detail.delete');
 
 
 require __DIR__.'/auth.php';
