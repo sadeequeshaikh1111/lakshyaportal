@@ -175,6 +175,8 @@
 
   <script>
   
+  var user_id = "{{ session('basicDetails')['User_id'] }}";
+  alert('User id is basic details is '+ user_id)
 
     $(document).ready(function() {
         // Show the basic details view initially
@@ -372,7 +374,8 @@ function saveBasicDetails() {
         mobile_number: $('#mobile_number').val(),                                                                         
         exam_location_1: $('#exam_location_1').val(),
         exam_location_2: $('#exam_location_2').val(),
-        exam_location_3: $('#exam_location_3').val()
+        exam_location_3: $('#exam_location_3').val(),
+        user_id:user_id
         // Add any other fields here if necessary
     };
 

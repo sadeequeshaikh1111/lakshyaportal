@@ -1,14 +1,16 @@
 function alert_function()
 {
-    alert("function called");
+    //alert("function called");
 }
-
+var user_id = "{{ session('basicDetails')['User_id'] }}";
+alert('User id is basic details is '+ user_id)
 
 function getBasicDetails() {
     console.log("Entering getBasicDetails");
     $.ajax({
         url: "/getBasicDetails", // Replace with your actual route path
         method: "GET",
+        data:{user_id:user_id},
         success: function(response) {
             console.log(response); // For debugging purposes
 
@@ -37,6 +39,7 @@ function getBasicDetails() {
             $("#exam_location_1").val(response.preferred_exam_location_1 || '');
             $("#exam_location_2").val(response.preferred_exam_location_2 || '');
             $("#exam_location_3").val(response.preferred_exam_location_3 || '');
+            $("#mother_name").val(response.mother_name || '');
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error("Error:", textStatus, errorThrown);

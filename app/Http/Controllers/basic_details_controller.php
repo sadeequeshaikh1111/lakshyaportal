@@ -18,13 +18,19 @@ class basic_details_controller extends Controller
         // Assuming you are getting the user's ID from the session or request
        try{ 
         $email = auth()->user()->email;// or however you are identifying the user
-        $user =  CandidateBasicDetail::where('email', $email)->first();
+       
+       $sessiondata= $request->session()->get('basicDetails');
+       $user_id = $sessiondata->User_id;
+        $user =  CandidateBasicDetail::where('user_id', $user_id)->first();
+        
+
+        //$user =  CandidateBasicDetail::where('email', $email)->first();
         return $user;
 
        }
        catch(Exception $e)
        {
-        return $e;
+        return "error ".$e;
        }
     }
 
@@ -49,7 +55,8 @@ class basic_details_controller extends Controller
             'mobile_number' => 'required|string|max:15',
             'exam_location_1' => 'required|string|max:255',
             'exam_location_2' => 'required|string|max:255',
-            'exam_location_3' => 'required|string|max:255'
+            'exam_location_3' => 'required|string|max:255',
+            'user_id' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -58,7 +65,7 @@ class basic_details_controller extends Controller
 
         // Retrieve the basic details entry for the given email, or create a new one
         $basicDetails = CandidateBasicDetail::updateOrCreate(
-            ['email' => $request->input('email')],
+            ['user_id' => $request->input('user_id')],
             [
                 'first_name' => $request->input('first_name'),
                 'middle_name' => $request->input('middle_name'),
@@ -74,7 +81,7 @@ class basic_details_controller extends Controller
                 'mobile_number' => $request->input('mobile_number'),
                 'preferred_exam_location_1' => $request->input('exam_location_1'),
                 'preferred_exam_location_2' => $request->input('exam_location_2'),
-                'preferred_exam_location_3' => $request->input('exam_location_3')
+                'preferred_exam_location_3' => $request->input('exam_location_3')                
             ]
         );
         $user_details = User::updateOrCreate(
