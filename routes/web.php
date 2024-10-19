@@ -6,6 +6,8 @@ use App\Http\Controllers\basic_details_controller;
 use App\Http\Controllers\location_controller;
 use App\Http\Controllers\educational_details_controllers;
 use App\Http\Controllers\documents_controller;
+use App\Http\Controllers\Exam_details_controller;
+
 
 
 
@@ -49,6 +51,12 @@ Route::get('load_docs',[App\Http\Controllers\documents_controller::Class,'load_d
 Route::post('save_document_details', [App\Http\Controllers\documents_controller::Class, 'save_document_details'])->name('save_document_details.post');
 Route::get('fetch_doc_details',[App\Http\Controllers\documents_controller::Class,'fetch_doc_details'])->name('fetch_doc_details.get');
 Route::delete('delete_doc_detail',[App\Http\Controllers\documents_controller::Class,'delete_doc_detail'])->name('delete_doc_detail.delete');
+//Apply Exams
+Route::get('load_exams',[App\Http\Controllers\Exam_details_controller::Class,'load_exams'])->name('load_exams.get');
+Route::post('apply_exam', [App\Http\Controllers\Exam_details_controller::Class, 'apply_exam'])->name('apply_exam.post');
+Route::get('fetch_applied_exams',[App\Http\Controllers\Exam_details_controller::Class,'fetch_applied_exams'])->name('fetch_applied_exams.get');
+Route::delete('Delete_applied_exam',[App\Http\Controllers\Exam_details_controller::Class,'Delete_applied_exam'])->name('Delete_applied_exam.delete');
+
 
 
 require __DIR__.'/auth.php';

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply for Exams demo</title>
+    <title>Apply for Exams Demo</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -19,19 +19,13 @@
                 <label for="examSelect" class="col-sm-3 col-form-label">Select Exam:</label>
                 <div class="col-sm-9">
                     <select class="form-control" id="examSelect" name="examSelect">
-                        <option value="MHCET">MHCET</option>
-                        <option value="BEd CET">BEd CET</option>
-                        <option value="LLB CET">LLB CET</option>
-                        <option value="Arts CET">Arts CET</option>
-                        <option value="Medical CET">Medical CET</option>
-                        <option value="Pharma CET">Pharma CET</option>
-                        <option value="Nursing CET">Nursing CET</option>
+                     
                     </select>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-12 text-right">
-                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <button type="submit" onclick=applyExam() class="btn btn-primary">Apply</button>
                 </div>
             </div>
         </form>
@@ -42,8 +36,6 @@
             <thead>
                 <tr>
                     <th>Exam</th>
-                    <th>Registration Number</th>
-                    <th>Fees</th>
                     <th>Payment Status</th>
                     <th>Actions</th>
                 </tr>
@@ -52,42 +44,190 @@
                 <!-- Data will be populated via JavaScript -->
             </tbody>
         </table>
+        <div class="text-right mt-3">
+            <button id="consolidatedPaymentBtn" class="btn btn-success">Make Consolidated Payment</button>
+        </div>
     </div>
 </div>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+    
     $(document).ready(function() {
+        load_exams();
+        fetch_applied_exams();
         var table = $('#appliedExamTable').DataTable();
+alert("apply test")
 
-        $('#applyExamForm').submit(function(e) {
-            e.preventDefault();
-
-            var exam = $('#examSelect').val();
-
-            // Handle AJAX request to apply for exam
-
-            // Example of adding a new row to the DataTable
-            table.row.add([
-                exam,
-                'REG123456',  // Example registration number, replace with actual data
-                'Pending',    // Example payment status, replace with actual data
-                '<button class="btn btn-sm btn-danger delete-btn">Delete</button> <button class="btn btn-sm btn-primary payment-btn">Make Payment</button>'
-            ]).draw();
-        });
-
-        // Handle delete action
-        $('#appliedExamTable tbody').on('click', '.delete-btn', function() {
-            table.row($(this).parents('tr')).remove().draw();
-        });
-
-        // Handle payment action
-        $('#appliedExamTable tbody').on('click', '.payment-btn', function() {
-            var row = table.row($(this).parents('tr')).data();
-            // Handle payment process
-            alert('Initiate payment process for ' + row[0]);
-        });
     });
+
+
+    function load_exams() {
+        var exams = [];
+            $.ajax({
+                url: "{{ route('load_exams.get') }}",
+                type: "get",
+                data: {
+                    email: email,
+                    user_id:user_id
+                },
+                success: function(response) {
+                    console.log("Data loaded successfully:", response);
+                    exams = response;
+
+                    console.log(exams);
+                    populate_examSelect(exams)
+                  //  populateDocumentSelect(documents);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error loading data:", error);
+                }
+            });
+        }
+
+        function populate_examSelect(exams) {
+        var examSelect = $('#examSelect');
+        examSelect.empty(); // Clear any existing options
+        examSelect.append('<option value="">Select Exam</option>');
+
+        exams.forEach(function(exm) {
+            examSelect.append('<option value="' + exm + '">' + exm + '</option>');
+        });
+    }
+
+    function Apply_exam(table) {
+            var email = "{{ session('basicDetails')['email'] }}";
+    var user_id = "{{ session('basicDetails')['User_id'] }}";
+        var formData = new FormData($('#documentForm')[0]);
+        alert(formData);
+        formData.append('email', email);
+        formData.append('user_id', user_id);
+        formData.append('exam_name', exam_name);
+
+        
+        $.ajax({
+            url: '{{ route("save_document_details.post") }}',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('Upload details saved successfully:', response);
+                alert('Upload details saved successfully!');
+                fetch_doc_details_ajax(email);
+
+                $('#documentForm')[0].reset();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error saving upload details:', error);
+                alert('Error saving upload details: ' + error);
+            }
+        });
+    }
+
+    function applyExam() {
+        var email = "{{ session('basicDetails')['email'] }}";
+        var user_id = "{{ session('basicDetails')['User_id'] }}";
+    var examName = $('#examSelect').val(); // Get the selected exam name from the dropdown
+
+    // Create a FormData object to send the data
+    var formData = new FormData();
+    formData.append('user_id', user_id);
+    formData.append('exam_name', examName);
+    formData.append('email', email);
+
+    // AJAX request to apply for the exam
+    $.ajax({
+        url: '{{ route("apply_exam.post") }}', // Update with your route for applying exams
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            console.log('Exam applied successfully:', response);
+            alert('Exam applied successfully!');
+            $('#applyExamForm')[0].reset(); // Reset the form after successful submission
+            fetch_applied_exams();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error applying for exam:', error);
+            alert('Error applying for exam: ' + error);
+        }
+    });
+}
+
+function fetch_applied_exams() {
+    var email = "{{ session('basicDetails')['email'] }}";
+    var user_id = "{{ session('basicDetails')['User_id'] }}";
+
+    $('#appliedExamTable').DataTable({
+        processing: true,
+        serverSide: true,
+        destroy: true,
+        ajax: {
+            url: "{{ route('fetch_applied_exams.get') }}",
+            type: "GET",
+            data: {
+                email: email, // Pass email as a parameter if needed
+                user_id:user_id
+
+            }
+        },
+
+        columns: [
+
+        { data: 'exam_name', name: 'exam_name' },
+        { data: 'Payment_Status', name: 'Payment_Status' },
+        {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            render: function (data, type, row, meta) {
+                return data; // Render HTML content for actions
+            }
+        }
+    ]
+    });
+}
+
+function Delete_applied_exam(id) {
+alert(id);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: "{{ route('Delete_applied_exam.delete') }}",
+        type: "DELETE",
+        data: {
+            id: id
+        },
+        success: function(response) {
+            console.log("Data deleted successfully:");
+            console.log(response);
+            fetch_applied_exams()
+            // You can process the response data here, e.g., update the table
+
+        },
+        error: function(xhr, status, error) {
+            console.error("Error deleting data:", error);
+        }
+    });
+} 
+
+
+
+    
+    
 </script>
 
 </body>
