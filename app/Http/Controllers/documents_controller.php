@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\educational_detail;
 use App\Models\document_detail;
+use Illuminate\Support\Facades\Storage;
+
 use DataTables;
 
 
@@ -37,19 +39,19 @@ class documents_controller extends Controller
         ]);
         $user_id=$request->input('user_id');
         $document=$request->input('document');
-        
+        $cat= $request->input('documentCategory');
         // Handle the file upload
         if ($request->hasFile('documentFile')) {
             $file = $request->file('documentFile');
             $fileName = time() . '_'.$document.'_'. $file->getClientOriginalName();
-            $filePath = $file->storeAs('uploads/documents/'.$user_id, $fileName, 'public');
+            $filePath = $file->storeAs('uploads/documents/'.$user_id.'/'.$cat, $fileName, 'public');
 
             // Save the document details in the database
             $document = new document_detail();
             $document->category = $request->input('documentCategory');
             $document->course = $request->input('document');
             $document->file_name = $fileName;
-            $document->file_path = '/storage/' . $filePath;
+            $document->file_path =  $filePath;
             $document->email = $request->input('email');
             $document->user_id = $request->input('user_id');
             
@@ -71,7 +73,7 @@ class documents_controller extends Controller
         $data=document_detail::where('user_id', $user_id)->get();
 
         return DataTables::of($data)->addColumn('action', function($data){
-        $btn = '<a type="button" id='.$data->id.' class="btn btn-danger btn-sm" onclick=Delete(this.id)>Delete</a>';
+        $btn = '<a type="button" id='.$data->id.' class="btn btn-danger btn-sm" onclick=Delete_doc(this.id)>Delete</a>';
         return $btn;
         })
         ->rawColumns(['action'])
@@ -83,8 +85,12 @@ class documents_controller extends Controller
 {
 try{
     $data=document_detail::findorfail($request->id);
+   $file_path=$data->file_path;
+    if (Storage::disk('public')->exists($file_path)) {
+        Storage::disk('public')->delete($file_path);
+    }
     $data->delete();
-    return response()->json(['message' => 'Record deleted successfully'], 200);
+    return response()->json(['message' => 'Record deleted successfully','file_path'=>$file_path], 200);
 
 }
 catch(Exception $e)
@@ -94,6 +100,7 @@ catch(Exception $e)
 }
 
 }
+
 
 }
 
