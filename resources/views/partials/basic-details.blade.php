@@ -15,6 +15,7 @@
         }
         .form-row label {
             width: 30%;
+            
         }
         .form-row input, .form-row select, .form-row textarea {
             width: 65%;
@@ -176,7 +177,7 @@
   <script>
   
   var user_id = "{{ session('basicDetails')['User_id'] }}";
-  alert('User id is basic details is '+ user_id)
+  
 
     $(document).ready(function() {
         // Show the basic details view initially

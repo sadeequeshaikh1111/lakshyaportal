@@ -2,8 +2,7 @@ function alert_function()
 {
     //alert("function called");
 }
-var user_id = "{{ session('basicDetails')['User_id'] }}";
-alert('User id is basic details is '+ user_id)
+
 
 function getBasicDetails() {
     console.log("Entering getBasicDetails");

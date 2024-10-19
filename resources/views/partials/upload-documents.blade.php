@@ -155,12 +155,7 @@
             success: function(response) {
                 console.log('Upload details saved successfully:', response);
                 alert('Upload details saved successfully!');
-
-                table.row.add([
-                    $('#documentCategory').val(),
-                    $('#documentFile')[0].files[0].name,
-                    '<button class="btn btn-sm btn-danger delete-btn">Delete</button>'
-                ]).draw();
+                fetch_doc_details_ajax(email);
 
                 $('#documentForm')[0].reset();
             },
@@ -188,19 +183,21 @@
 
             }
         },
+
         columns: [
-            { data: 'category', name: 'category' },
-            { data: 'file_name', name: 'file_name' },
-            {
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                render: function (data, type, row, meta) {
-                    return '<button class="btn btn-sm btn-danger delete-btn" >Delete</button>'; // Render HTML content for actions
-                }
+
+        { data: 'category', name: 'category' },
+        { data: 'file_name', name: 'file_name' },
+        {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            render: function (data, type, row, meta) {
+                return data; // Render HTML content for actions
             }
-        ]
+        }
+    ]
     });
 }
 function Delete_doc(id) {
@@ -221,7 +218,7 @@ function Delete_doc(id) {
         success: function(response) {
             console.log("Data deleted successfully:");
             console.log(response);
-            fetchEducationalDetails_ajax(email);
+            fetch_doc_details_ajax(email);
             // You can process the response data here, e.g., update the table
 
         },
@@ -229,7 +226,9 @@ function Delete_doc(id) {
             console.error("Error deleting data:", error);
         }
     });
-}   
+} 
+
+
     
    
 </script>
