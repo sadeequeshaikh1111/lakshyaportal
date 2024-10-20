@@ -56,7 +56,7 @@
                 </div>
                 <div>
                     <label for="mother_name">Mother's Name:</label>
-                    <input type="text" id="mother_name" name="mother_name" value="{{ old('mother_name') ?: (session()->has('basicDetails') ? session('basicDetails')['mothers_name'] : '') }}" autocomplete="additional-name">
+                    <input type="text" id="mother_name" name="mother_name" value="{{ old('mother_name') ?: (session()->has('basicDetails') ? session('basicDetails')['mother_name'] : '') }}" autocomplete="additional-name">
                     <div class="error">{{ $errors->first('mother_name') }}</div>
                 </div>
             </div>
@@ -69,7 +69,8 @@
                 </div>
                 <div>
                     <label for="permanent_address">Permanent Address:</label>
-                    <textarea id="permanent_address" name="permanent_address" rows="3" required>{{ old('permanent_address') }}</textarea>
+                    <textarea id="permanent_address" name="permanent_address" rows="3" value="{{ old('permanant_address') ?: (session()->has('basicDetails') ? session('basicDetails')['permanant_address'] : '') }}" required>{{ old('permanent_address') ?: (session()->has('basicDetails') ? session('basicDetails')['permanent_address'] : '') }}
+                    </textarea>
                     <div class="error">{{ $errors->first('permanent_address') }}</div>
                 </div>
             </div>
@@ -79,7 +80,7 @@
                     <label for="gender">Gender:</label>
                     <select id="gender" name="gender" required>
                         <option value="">Select</option>
-                        <option value="male">Male</option>
+                        <option  value="male" >Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
@@ -126,7 +127,7 @@
                 </div>
                 <div>
                     <label for="taluka">Taluka:</label>
-                    <input type="text" id="taluka" name="taluka" value="{{ old('taluka') }}" required autocomplete="address-level3">
+                    <input type="text" id="taluka" name="taluka" value="{{ old('taluka') ?: (session()->has('basicDetails') ? session('basicDetails')['taluka'] : '') }}" required autocomplete="address-level3">
                     <div class="error">{{ $errors->first('taluka') }}</div>
                 </div>
             </div>
@@ -134,12 +135,12 @@
             <div class="form-row">
                 <div>
                     <label for="mobile_number">Mobile Number:</label>
-                    <input type="tel" id="mobile_number" name="mobile_number" value="{{ old('mobile_number') }}" required autocomplete="tel">
+                    <input type="tel" id="mobile_number" name="mobile_number" value="{{ old('mobile_number') ?: (session()->has('basicDetails') ? session('basicDetails')['mobile_number'] : '') }}" required autocomplete="tel">
                     <div class="error">{{ $errors->first('mobile_number') }}</div>
                 </div>
                 <div>
                     <label for="exam_location_1">Preferred Exam Location 1:</label>
-                    <input type="text" id="exam_location_1" name="exam_location_1" value="{{ old('exam_location_1') }}" required>
+                    <input type="text" id="exam_location_1" name="exam_location_1" value="{{ old('preferred_exam_location_1') ?: (session()->has('basicDetails') ? session('basicDetails')['preferred_exam_location_1'] : '') }}" required>
                     <div class="error">{{ $errors->first('exam_location_1') }}</div>
                 </div>
             </div>
@@ -147,12 +148,12 @@
             <div class="form-row">
                 <div>
                     <label for="exam_location_2">Preferred Exam Location 2:</label>
-                    <input type="text" id="exam_location_2" name="exam_location_2" value="{{ old('exam_location_2') }}" required>
+                    <input type="text" id="exam_location_2" name="exam_location_2" value="{{ old('preferred_exam_location_2') ?: (session()->has('basicDetails') ? session('basicDetails')['preferred_exam_location_2'] : '') }}" required>
                     <div class="error">{{ $errors->first('exam_location_2') }}</div>
                 </div>
                 <div>
                     <label for="exam_location_3">Preferred Exam Location 3:</label>
-                    <input type="text" id="exam_location_3" name="exam_location_3" value="{{ old('exam_location_3') }}" required style="width: 100%;">
+                    <input type="text" id="exam_location_3" name="exam_location_3" value="{{ old('preferred_exam_location_3') ?: (session()->has('basicDetails') ? session('basicDetails')['preferred_exam_location_3'] : '') }}" required style="width: 100%;">
                     <div class="error">{{ $errors->first('exam_location_3') }}</div>
                 </div>
             </div>

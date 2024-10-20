@@ -9,4 +9,12 @@ class applied_exam_detail extends Model
 {
     use HasFactory;
     protected $table = 'applied_exam_details';
+    protected $fillable = [
+        'email',
+        'exam_name',
+        'Fees',
+        'Payment_Status',
+    ];
+    
+
 }

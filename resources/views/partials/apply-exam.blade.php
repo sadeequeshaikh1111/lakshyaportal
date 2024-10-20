@@ -25,7 +25,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-12 text-right">
-                    <button type="submit" onclick=applyExam() class="btn btn-primary">Apply</button>
+                    <button  onclick=applyExam() class="btn btn-primary">Apply</button>
                 </div>
             </div>
         </form>
@@ -35,8 +35,10 @@
         <table id="appliedExamTable" class="display">
             <thead>
                 <tr>
+                
                     <th>Exam</th>
                     <th>Payment Status</th>
+                    <th>Fees</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -129,6 +131,8 @@ alert("apply test")
     }
 
     function applyExam() {
+        alert("Appliy exam clicked")
+        event.preventDefault(); // Prevent the default form submission
         var email = "{{ session('basicDetails')['email'] }}";
         var user_id = "{{ session('basicDetails')['User_id'] }}";
     var examName = $('#examSelect').val(); // Get the selected exam name from the dropdown
@@ -181,9 +185,10 @@ function fetch_applied_exams() {
         },
 
         columns: [
-
         { data: 'exam_name', name: 'exam_name' },
         { data: 'Payment_Status', name: 'Payment_Status' },
+        { data: 'Fees', name: 'Fees' },
+    
         {
             data: 'action',
             name: 'action',
@@ -198,31 +203,28 @@ function fetch_applied_exams() {
 }
 
 function Delete_applied_exam(id) {
-alert(id);
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    if (confirm('Are you sure you want to delete this exam?  ')) {
+        $.ajax({
+            url: '{{ route('Delete_applied_exam.delete') }}', // Use the correct route
+            type: 'DELETE',
+            data: { id: id },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                console.log('Applied exam deleted successfully:', response);
+                alert('Applied exam deleted successfully!');
+                // Reload the table after deletion
+                $('#appliedExamTable').DataTable().ajax.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting applied exam:', error);
+                alert('Error deleting applied exam: ' + error);
+            }
+        });
+    }
+}
 
-    $.ajax({
-        url: "{{ route('Delete_applied_exam.delete') }}",
-        type: "DELETE",
-        data: {
-            id: id
-        },
-        success: function(response) {
-            console.log("Data deleted successfully:");
-            console.log(response);
-            fetch_applied_exams()
-            // You can process the response data here, e.g., update the table
-
-        },
-        error: function(xhr, status, error) {
-            console.error("Error deleting data:", error);
-        }
-    });
-} 
 
 
 

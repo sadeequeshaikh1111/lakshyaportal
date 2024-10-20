@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\CandidateBasicDetail;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -88,6 +90,17 @@ class basic_details_controller extends Controller
             ['email' => $request->input('email')],
             ['Basic_details_status' => "Updated"]
         );
+
+        //session('basicDetails')['date_of_birth']
+
+        
+
+
+    
+        // Flash basicDetails to the session
+        $request->session()->put('basicDetails', $basicDetails);
+
+
         return response()->json(['message' => 'Basic details & user saved successfully', 'data' => $user_details, 'basicDetails' => $basicDetails], 200);
 
 
