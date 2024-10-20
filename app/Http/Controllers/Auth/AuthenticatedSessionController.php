@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\CandidateBasicDetail;
+use Illuminate\Support\Facades\Session;
+
 
 
 class AuthenticatedSessionController extends Controller

@@ -39,6 +39,12 @@ function getBasicDetails() {
             $("#exam_location_2").val(response.preferred_exam_location_2 || '');
             $("#exam_location_3").val(response.preferred_exam_location_3 || '');
             $("#mother_name").val(response.mother_name || '');
+            $("#middle_name").val(response.middle_name || '');
+            $("#last_name").val(response.last_name || '');
+
+            
+            
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error("Error:", textStatus, errorThrown);
