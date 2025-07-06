@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        INSTALL_FROM: git
+        GIT_REPO: https://github.com/sadeequeshaikh1111/lakshyaportal.git
+        GIT_BRANCH: main
+    container_name: lakshyaportal_app
+    ports:
+      - "8080:8000"
+    networks:
+      - lakshya_net
+    volumes:
+      - .:/var/www
+
+networks:
+  lakshya_net:
